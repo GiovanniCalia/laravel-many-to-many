@@ -33,6 +33,7 @@ class PostController extends Controller
             'description'    => 'required',
             'image'          => 'nullable|url|max:255',
             'date_creation'  => 'required|max:20',
+            'tags'           => 'exists:App\Tag,id'
         ];
     }
 
