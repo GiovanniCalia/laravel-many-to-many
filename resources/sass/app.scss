@@ -1,0 +1,76 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a{
+    text-decoration: none;
+}
+
+ol{
+    padding-left: 0;
+}
+
+.background_post{
+
+    h1{
+        text-transform: uppercase;
+        text-align: center;
+        font-size: 4rem;
+    }
+}
+
+
+/* BTN DELETE*/
+.overlay {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    .popup {
+        margin: auto;
+        padding: 2rem;
+        max-width: 90%;
+        background-color: white;
+        border-radius: 1rem;
+    }
+}
+
+
+/* MAIN SECTIONS */
+.cards_main{
+
+    li{
+        list-style-type: none;
+        width: 300px;
+        margin-top: 2rem;
+        padding: 0.5rem;
+        background-color: lightgray;
+        border-radius: 20px;
+        box-shadow: 5px 5px 5px black;
+    }
+}
+
+.main_box{
+    width: 100%;
+
+    .box{
+        width: 500px;
+        padding: 1rem;
+        margin: auto;
+        background-color: lightblue;
+        border-radius: 20px;
+    }
+}
