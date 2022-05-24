@@ -21,19 +21,32 @@
                     <label for="slug" class="form-label"><h4>{{ __('slug') }}</h4></label>
                     <input type="text" name="slug" class="form-control" id="slug" value="{{ old('slug') }}">
                   </div>
-                  {{--<input type="button" value="Generate slug" id="btn-slugger">--}}
+                  <input type="button" value="Generate slug" id="btn-slugger">
                   @error('slug')
                     <div class="alert alert-danger">{{ $message }}</div>
                   @enderror
                   <select name="category_id" id="category">
                     <option value="">Select category</option>
                     @foreach ($categories as $category)
-                      <option value="{{ $category->id }}">{{ $category->name }}</option>
+                      <option value="{{ $category->id }}" @if ($category->id == old('category_id')) selected @endif>{{ $category->name }}</option>
                     @endforeach
                   </select>
                   @error('category_id')
                     <div class="alert alert-danger">{{ $message }}</div>
                   @enderror
+
+                  <fieldset>
+                    <legend>Tags</legend>
+                    @foreach ($tags as $tag)
+                      <input type="checkbox" name="tags" id="tag-{{ $tag->id }}" value="{{ $tag->id }}"
+                      @if (in_array($tag->id, old('tags', []))) checked @endif>
+                      <label for="tag-{{ $tag->id }}">{{ $tag->name }}</label>
+                    @endforeach
+                    @error('tags')
+                      <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                  </fieldset>
+
                   <div class="mb-3">
                     <label for="creator" class="form-label"><h4>{{ __('creator') }}</h4></label>
                     <input type="text" name="creator" class="form-control" id="creator" value="{{ old('creator') }}">

@@ -5,30 +5,30 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Post;
 use App\Category;
+use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-
-    protected $validators = [
+    /*protected $validators = [
         'title'          => 'required|max:255',
         'creator'        => 'required|max:50',
         'description'    => 'required',
         'image'          => 'nullable|url|max:255',
         'date_creation'  => 'required|max:20',
-    ];
+    ];*/
 
      private function getValidators($model) {
         return [
             'title'          => 'required|max:255',
-            'slug' => [
+            'slug'           => [
                 'required',
                 Rule::unique('posts')->ignore($model), // 'required|unique:posts|max:255',
                 'max:255'
             ],
-            'category_id'  => 'required|exists:App\Category,id',
+            'category_id'    => 'required|exists:App\Category,id',
             'creator'        => 'required|max:50',
             'description'    => 'required',
             'image'          => 'nullable|url|max:255',
@@ -64,8 +64,12 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $tags = Tag::all();
 
-        return view('admin.posts.create', compact('categories'));
+        return view('admin.posts.create', [
+            'categories' => $categories,
+            'tags'       => $tags,
+        ]);
     }
 
     /**
@@ -80,6 +84,7 @@ class PostController extends Controller
         $saveData = $request->all() + ['user_id' => Auth::user()->id];
 
         $save = Post::create($saveData);
+        $save->tags()->attach($saveData['tags']);
         return redirect()->route('admin.posts.show', $save->id);
     }
 
@@ -92,10 +97,11 @@ class PostController extends Controller
     public function show(Post $post)
     {
         $categories = Category::all();
+        $tags = Tag::all();
         return view('admin.posts.show', [
             'post'       => $post,
-            'categories' => $categories
-
+            'categories' => $categories,
+            'tags'       => $tags,
         ]);//compact('post')
     }
 
@@ -110,10 +116,12 @@ class PostController extends Controller
         if (Auth::user()->id !== $post->user_id) abort(403);
 
         $categories = Category::all();
+        $tags = Tag::all();
 
         return view('admin.posts.edit', [
             'post'       => $post,
-            'categories' => $categories
+            'categories' => $categories,
+            'tags'       => $tags,
 
         ]); //compact('post')
     }
@@ -131,7 +139,9 @@ class PostController extends Controller
 
         $request->validate($this->getValidators($post));
 
-        $post->update($request->all());
+        $postData = $request->all();
+        $post->update($postData);
+        $post->tags()->sync($postData['tags']);
 
         return redirect()->route('admin.posts.show', $post->id);
     }
@@ -146,6 +156,7 @@ class PostController extends Controller
     {
         if (Auth::user()->id !== $post->user_id) abort(403);
 
+        $post->tags()->detach();
         $post->delete();
 
         return redirect()->back();

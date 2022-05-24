@@ -8,9 +8,10 @@
         <img src="{{ $post->image }}" alt="{{ $post->title }}" class="img-fluid">
         <h1>{{ $post->title }}</h1>
         <div>Created by: <strong>{{ $post->user->name }}</strong></div>
-        <div>Category: {{ $post->category->name }}</div>
+        <div>Category: <strong>{{ $post->category->name }}</strong></div>
         <div>Phone number: {{ $post->user->userInfo->phone_number }}</div>
         <p>{{ $post->description }}</p>
+        <div>Tags: <strong>{{ $post->tags->pluck('name')->join(', ') }}</strong></div>
         <div>Creation date: <strong>{{ $post->date_creation }}</strong></div>
         <div class="links mt-2">
             <a class="btn btn-primary" href="{{ url()->previous()}}" id="gray">Back</a>
