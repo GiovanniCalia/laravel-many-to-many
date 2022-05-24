@@ -25,7 +25,8 @@
                   @error('slug')
                     <div class="alert alert-danger">{{ $message }}</div>
                   @enderror
-                  <select name="category_id" id="category">
+                  <label for="category_id" class="form-label"><h4>{{ __('category') }}</h4></label>
+                  <select name="category_id" id="category" class="form-control">
                     <option value="">Select category</option>
                     @foreach ($categories as $category)
                       <option value="{{ $category->id }}" @if ($category->id == old('category_id', $post->category->id)) selected @endif>{{ $category->name }}</option>
@@ -35,8 +36,8 @@
                     <div class="alert alert-danger">{{ $message }}</div>
                   @enderror
 
-                  <fieldset>
-                    <legend>Tags</legend>
+                  <fieldset class="">
+                    <legend>tags</legend>
                     @foreach ($tags as $tag)
                       <input type="checkbox" name="tags[]" id="tag-{{ $tag->id }}" value="{{ $tag->id }}"
                       @if (in_array($tag->id, old('tags', $post->tags->pluck('id')->all()))) checked @endif>

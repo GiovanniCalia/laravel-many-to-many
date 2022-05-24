@@ -12,13 +12,6 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-    /*protected $validators = [
-        'title'          => 'required|max:255',
-        'creator'        => 'required|max:50',
-        'description'    => 'required',
-        'image'          => 'nullable|url|max:255',
-        'date_creation'  => 'required|max:20',
-    ];*/
 
      private function getValidators($model) {
         return [
@@ -82,6 +75,20 @@ class PostController extends Controller
     {
         $request->validate($this->getValidators(null));
         $saveData = $request->all() + ['user_id' => Auth::user()->id];
+
+        preg_match_all('/#(\S*)/', $saveData['description'], $tags_from_content);
+
+        $tagIds = [];
+        foreach($tags_from_content[1] as $tag) {
+            $newTag = Tag::create([
+                'name'  => $tag,
+                'slug'  => $tag
+            ]);
+
+            $tagIds[] = $newTag->id;
+        }
+
+        $saveData['tags'] = $tagIds;
 
         $save = Post::create($saveData);
         $save->tags()->attach($saveData['tags']);

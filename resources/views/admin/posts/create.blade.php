@@ -25,18 +25,22 @@
                   @error('slug')
                     <div class="alert alert-danger">{{ $message }}</div>
                   @enderror
-                  <select name="category_id" id="category">
-                    <option value="">Select category</option>
-                    @foreach ($categories as $category)
-                      <option value="{{ $category->id }}" @if ($category->id == old('category_id')) selected @endif>{{ $category->name }}</option>
-                    @endforeach
-                  </select>
-                  @error('category_id')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                  @enderror
+                  <div class="my-3">
+                    <label for="category_id" class="form-label"><h4>{{ __('category') }}</h4></label>
+                    <select name="category_id" id="category" class="form-control">
+                      <option value="">Select category</option>
+                      @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" @if ($category->id == old('category_id')) selected @endif>{{ $category->name }}</option>
+                      @endforeach
+                    </select>
+                    @error('category_id')
+                      <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
+                  </div>
+                  
 
-                  <fieldset>
-                    <legend>Tags</legend>
+                  <fieldset class="d-none">
+                    <legend>tags</legend>
                     @foreach ($tags as $tag)
                       <input type="checkbox" name="tags" id="tag-{{ $tag->id }}" value="{{ $tag->id }}"
                       @if (in_array($tag->id, old('tags', []))) checked @endif>
@@ -80,6 +84,8 @@
               <div class="text-center links my-4">
                 <a class="btn btn-primary" href="{{ url()->previous()}}" id="gray">Back</a>
                 <a class="btn btn-primary" href="{{ route('admin.posts.index') }}">Return to posts list</a>
+                <a class="btn btn-primary" href="{{ route('admin.posts.indexUser') }}">Return to my posts list</a>
+                <a class="btn btn-primary" href="{{ route('admin.home') }}" id="red">Return to home</a>
               </div>
           </div>
       </div>
